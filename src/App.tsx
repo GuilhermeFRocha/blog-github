@@ -1,10 +1,8 @@
 import Logo from "./assets/Logo.svg";
-import Avatar from "./assets/avatar.svg";
 import { MdOpenInNew } from "react-icons/md";
 import { AiFillGithub } from "react-icons/ai";
 import { BsFillBuildingFill, BsFillPeopleFill } from "react-icons/bs";
 import {
-  CardPosts,
   Container,
   ContainerPosts,
   ContentUser,
@@ -16,7 +14,7 @@ import {
 } from "./styles/home";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { format, differenceInDays } from "date-fns";
+import { Posts } from "./components/Posts";
 
 interface UserProps {
   name: string;
@@ -30,6 +28,14 @@ interface ReposProps {
   title: string;
   desc: string;
   updated_at: string;
+  body: string;
+  id: number
+}
+
+interface PostProps {
+  title: string;
+  body: string;
+  id: number
 }
 
 function App() {
@@ -62,13 +68,6 @@ function App() {
     fetchUsers();
     fetchRepos();
   }, [fetchUsers, fetchRepos]);
-
-  const dataPost = repos.map((itemn) => {
-    const data = new Date(itemn.updated_at);
-    return data;
-  });
-
-  const diffInDays = differenceInDays(new Date(), dataPost[0]);
 
   return (
     <>
@@ -104,8 +103,7 @@ function App() {
                 </li>
               </ul>
             </DescUser>
-          </ContentUser>
-
+            </ContentUser>
           <SearchContent>
             <div>
               <p>Publicaçoes</p>
@@ -120,27 +118,9 @@ function App() {
           </SearchContent>
 
           <ContainerPosts>
-            <CardPosts>
-              {repos.map((item: any) => {
-                return (
-                  <div key={item.title}>
-                    <h2>
-                      {item.title}{" "}
-                      <span>
-                        {diffInDays > 1
-                          ? `há ${diffInDays} dias`
-                          : `há ${diffInDays} dia`}
-                      </span>
-                    </h2>
-                    <p>{item.body.slice(0, 200)}... </p>
-                  </div>
-                );
-              })}
-            </CardPosts>
-            <CardPosts>Container 2</CardPosts>
-
-            <CardPosts>Container 1</CardPosts>
-            <CardPosts>Container 2</CardPosts>
+            {repos.map((item:PostProps) => {
+            return  <Posts posts={item} key={item.id}/>
+            })}
           </ContainerPosts>
         </Container>
       </Main>
