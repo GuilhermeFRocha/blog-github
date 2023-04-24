@@ -29,18 +29,19 @@ interface ReposProps {
   desc: string;
   updated_at: string;
   body: string;
-  id: number
+  id: number;
 }
 
 interface PostProps {
   title: string;
   body: string;
-  id: number
+  id: number;
 }
 
 function App() {
   const [users, setUsers] = useState<UserProps>();
   const [repos, setRepos] = useState<ReposProps[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -69,6 +70,16 @@ function App() {
     fetchRepos();
   }, [fetchUsers, fetchRepos]);
 
+  const filteredRepos = repos.filter((repo) =>
+    repo.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const handleSearchInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchText(event.target.value);
+  };
+
   return (
     <>
       <Header>
@@ -84,7 +95,7 @@ function App() {
             <DescUser>
               <div className="nameUser">
                 <h2>{users?.name}</h2>
-                <a href="">
+                <a target="_blank" href="https://github.com/GuilhermeFRocha">
                   github <MdOpenInNew />
                 </a>
               </div>
@@ -103,7 +114,7 @@ function App() {
                 </li>
               </ul>
             </DescUser>
-            </ContentUser>
+          </ContentUser>
           <SearchContent>
             <div>
               <p>Publicaçoes</p>
@@ -114,12 +125,17 @@ function App() {
               </span>
             </div>
 
-            <input placeholder="Buscar conteúdo" type="text" />
+            <input
+              placeholder="Buscar conteúdo"
+              type="text"
+              onChange={handleSearchInputChange}
+              value={searchText}
+            />
           </SearchContent>
 
           <ContainerPosts>
-            {repos.map((item:PostProps) => {
-            return  <Posts posts={item} key={item.id}/>
+            {filteredRepos.map((item: PostProps) => {
+              return <Posts posts={item} key={item.id} />;
             })}
           </ContainerPosts>
         </Container>

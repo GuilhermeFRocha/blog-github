@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Container, DescUser, Header, Main } from "./styles/home";
 import { AiFillGithub, AiOutlineArrowLeft } from "react-icons/ai";
 import { TbMessageCircle2Filled } from "react-icons/tb";
-import { ContentPost, HeaderPost, TitlePost } from "./styles/posts";
+import { BodyPost, ContentPost, HeaderPost, TitlePost } from "./styles/posts";
 import { MdDateRange, MdOpenInNew } from "react-icons/md";
 import { differenceInDays } from "date-fns";
 
@@ -17,20 +17,15 @@ interface PostProps {
   comments: number;
   login: string;
   created_at: string;
+  html_url: string;
   user: User;
 }
 
 export const Post = () => {
   const location = useLocation();
   const post: PostProps = location.state;
-
-  console.log(post);
-
   const dataPost = new Date(post.created_at);
-
   const diffInDays = differenceInDays(new Date(), dataPost);
-
-  console.log(diffInDays);
 
   return (
     <>
@@ -46,7 +41,7 @@ export const Post = () => {
                 <AiOutlineArrowLeft color="#3294F8" width={12} height={12} />
                 <p>voltar</p>
               </a>
-              <a href="">
+              <a href={post.html_url} target="_blank" rel="noopener noreferrer">
                 <p>ver no github</p>
                 <MdOpenInNew color="#3294F8" />
               </a>
@@ -74,6 +69,9 @@ export const Post = () => {
               </ul>
             </DescUser>
           </ContentPost>
+          <BodyPost>
+            <p>{post.body}</p>
+          </BodyPost>
         </Container>
       </Main>
     </>

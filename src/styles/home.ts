@@ -145,6 +145,7 @@ export const CardPosts = styled.div`
   background-color: #112131;
   border-radius: 10px;
   padding: 32px;
+  cursor: pointer;
 
   h2 {
     display: flex;
