@@ -83,14 +83,14 @@ function App() {
   return (
     <>
       <Header>
-        <img src={Logo} alt="" />
+        <img src={Logo} alt="logo" />
       </Header>
 
       <Main>
         <Container>
           <ContentUser>
             <ImgUser>
-              <img src={users?.avatar_url} alt="" />
+              <img src={users?.avatar_url} alt="Imagem usuario" />
             </ImgUser>
             <DescUser>
               <div className="nameUser">
